@@ -2,10 +2,15 @@
   "name": "three-playground",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start": "yarn run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aleksandr Mitin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/three": "^0.149.0",
+    "three": "^0.149.0"
+  }
 }
