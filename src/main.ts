@@ -21,7 +21,8 @@ const render = function () {
     scene.add(camera);
     // добавляем канвас в редерер WebGL
     const renderer = new THREE.WebGLRenderer({ canvas });
-    console.log('hello')
+    renderer.setSize(size.width, size.height);
+    renderer.render(scene, camera);
 }
 
 document.addEventListener("DOMContentLoaded", render);
