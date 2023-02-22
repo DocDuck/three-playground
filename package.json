@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "yarn run start",
+    "start": "tsc && yarn run main",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aleksandr Mitin",
