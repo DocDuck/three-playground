@@ -18,10 +18,11 @@ const render = function () {
     scene.add(mesh);
     // дальше добавляем камеру
     const camera = new THREE.PerspectiveCamera(75, size.width / size.height);
-    camera.position.x = 1;
-    camera.position.y = 1;
-    camera.position.z = 3;
+    camera.position.set(1, 1, 4)
     scene.add(camera);
+    // добавляем оси координат на сцену
+    const axes = new THREE.AxesHelper();
+    scene.add(axes)
     // добавляем канвас в редерер WebGL
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(size.width, size.height);
