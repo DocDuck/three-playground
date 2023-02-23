@@ -8,9 +8,9 @@ const size = {
 const render = function () {
     // забираем дом узел канваса
     const canvas = document.querySelector('#canvas');
-    if(!canvas) return;
+    if (!canvas) return;
     const scene = new THREE.Scene();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const geometry = new THREE.BoxGeometry(12, 12, 12);
     const material = new THREE.MeshBasicMaterial({ color: 'cyan' });
     // создаем меш (каркас фигуры) из геометрии и материала
     const mesh = new THREE.Mesh(geometry, material);
