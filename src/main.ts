@@ -10,7 +10,7 @@ const render = function () {
     const canvas = document.querySelector('#canvas');
     if (!canvas) return;
     const scene = new THREE.Scene();
-    const geometry = new THREE.BoxGeometry(12, 12, 12);
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({ color: 'cyan' });
     // создаем меш (каркас фигуры) из геометрии и материала
     const mesh = new THREE.Mesh(geometry, material);
@@ -18,6 +18,9 @@ const render = function () {
     scene.add(mesh);
     // дальше добавляем камеру
     const camera = new THREE.PerspectiveCamera(75, size.width / size.height);
+    camera.position.x = 1;
+    camera.position.y = 1;
+    camera.position.z = 3;
     scene.add(camera);
     // добавляем канвас в редерер WebGL
     const renderer = new THREE.WebGLRenderer({ canvas });
