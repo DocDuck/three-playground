@@ -16,7 +16,7 @@ const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera
     time = currentTime;
 
     const delta = 0.001 * deltaTime;
-    
+
     if (Array.isArray(meshes)) {
         meshes.forEach((mesh) => {
             mesh.rotation.y += delta;
