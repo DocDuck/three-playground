@@ -5,6 +5,16 @@ const size = {
     height: 600
 }
 
+const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, meshes: THREE.Mesh | THREE.Mesh[]) {
+    if (Array.isArray(meshes)) {
+        meshes.forEach((mesh) => {
+            mesh.rotation.y += 0.01;
+        })
+    }
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(() => tick(renderer, scene, camera, meshes));
+}
+
 const render = function () {
     // забираем дом узел канваса
     const canvas = document.querySelector('#canvas');
@@ -36,7 +46,8 @@ const render = function () {
     // добавляем канвас в редерер WebGL
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(size.width, size.height);
-    renderer.render(scene, camera);
+    // Добавляем анимацию вращения для всех переданных мешей
+    tick(renderer, scene, camera, [mesh1, mesh2, mesh3])
 }
 
 document.addEventListener("DOMContentLoaded", render);
