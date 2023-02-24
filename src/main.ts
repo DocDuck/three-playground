@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const size = {
     width: 800,
@@ -31,7 +32,7 @@ const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera
 
 const render = function () {
     // забираем дом узел канваса
-    const canvas = document.querySelector('#canvas');
+    const canvas: HTMLElement = document.querySelector('#canvas');
     if (!canvas) return;
     const scene = new THREE.Scene();
     const geometry = new THREE.BoxGeometry(2, 0.5, 1);
@@ -57,6 +58,9 @@ const render = function () {
     // добавляем оси координат на сцену
     const axes = new THREE.AxesHelper(2);
     scene.add(axes);
+    // назначаем контролы для управления камерой
+    // достаточно инстанциировать чтобы работало
+    const controls = new OrbitControls(camera, canvas)
     // добавляем канвас в редерер WebGL
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(size.width, size.height);
