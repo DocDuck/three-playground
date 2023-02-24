@@ -5,10 +5,18 @@ const size = {
     height: 600
 }
 
-const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, meshes: THREE.Mesh | THREE.Mesh[]) {
-    
+// Тут будет храниться таймстамп для расчета длительности тика:
+let time: number;
 
-    const delta = 0.01
+const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, meshes: THREE.Mesh | THREE.Mesh[]) {
+    // Синхронизация скорости анимации на любых устройствах за счет умножения на разницу времени между тиками
+    // Частота тиков на устройствах разная в зависимости от мощности железа
+    const currentTime = Date.now();
+    const deltaTime = currentTime - time;
+    time = currentTime;
+
+    const delta = 0.001 * deltaTime;
+    
     if (Array.isArray(meshes)) {
         meshes.forEach((mesh) => {
             mesh.rotation.y += delta;
@@ -53,6 +61,7 @@ const render = function () {
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(size.width, size.height);
     // Добавляем анимацию вращения для всех переданных мешей
+    time = Date.now();
     tick(renderer, scene, camera, [mesh1, mesh2, mesh3])
 }
 
