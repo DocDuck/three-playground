@@ -6,11 +6,17 @@ const size = {
 }
 
 const tick = function (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, meshes: THREE.Mesh | THREE.Mesh[]) {
+    
+
+    const delta = 0.01
     if (Array.isArray(meshes)) {
         meshes.forEach((mesh) => {
-            mesh.rotation.y += 0.01;
+            mesh.rotation.y += delta;
         })
+    } else {
+        meshes.rotation.y += delta;
     }
+
     renderer.render(scene, camera);
     window.requestAnimationFrame(() => tick(renderer, scene, camera, meshes));
 }
