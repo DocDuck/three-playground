@@ -30,7 +30,6 @@ const controls = new OrbitControls(camera, canvas);
 let time: number;
 /** Flags */
 let isAnimationEnabled = false;
-let isFullScreen = false;
 
 /** Methods */
 const tick = (meshes: THREE.Mesh | THREE.Mesh[]) => {
@@ -54,8 +53,12 @@ const tick = (meshes: THREE.Mesh | THREE.Mesh[]) => {
     renderer.render(scene, camera);
     window.requestAnimationFrame(() => tick(meshes));
 }
-const toggleFullscreen = () => {
-    isFullScreen = !isFullScreen;
+const toggleFullscreen = async () => {
+    if(!document.fullscreenElement) {
+        await canvas.requestFullscreen();
+    } else {
+        await document.exitFullscreen();
+    }
 }
 const toggleAnimation = () => {
     isAnimationEnabled = !isAnimationEnabled;
@@ -75,6 +78,10 @@ const handleResize: EventListener = (event: KeyboardEvent) => {
     camera.updateProjectionMatrix();
 
     renderer.setSize(size.width, size.height);
+    // Дублируем пересчет плотности пикселей,
+    // так как если окно переместить на второй Моник с другим разрешением,
+    // то неплохо бы обновить отрисовку в новом разрешении
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 }
 
 /**
@@ -95,6 +102,9 @@ const render = function () {
     const axes = new THREE.AxesHelper(2);
     scene.add(axes);
     renderer.setSize(size.width, size.height);
+    // Задаем плотность пикселей, но не более 2
+    // Потому что человеческий глаз не поймет разницы если будет плотнее
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     // Добавляем анимацию вращения для всех переданных мешей
     time = Date.now();
     tick([mesh1, mesh2, mesh3])
