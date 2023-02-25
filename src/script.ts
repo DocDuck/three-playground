@@ -28,7 +28,7 @@ const controls = new OrbitControls(camera, canvas);
 let time: number;
 
 /** Methods */
-const tick = (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, meshes: THREE.Mesh | THREE.Mesh[]) => {
+const tick = (meshes: THREE.Mesh | THREE.Mesh[]) => {
     // Синхронизация скорости анимации на любых устройствах за счет умножения на разницу времени между тиками
     // Частота тиков на устройствах разная в зависимости от мощности железа
     const currentTime = Date.now();
@@ -46,7 +46,7 @@ const tick = (renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.P
     }
 
     renderer.render(scene, camera);
-    window.requestAnimationFrame(() => tick(renderer, scene, camera, meshes));
+    window.requestAnimationFrame(() => tick(meshes));
 }
 const toggleFullscreen = () => {
 }
@@ -67,20 +67,19 @@ const render = function () {
     mesh1.position.set(0, 0.5, 0);
     mesh2.position.set(0, 0, 0);
     mesh3.position.set(0, -0.5, 0);
-
     // добавляем фигуру на сцену
     scene.add(mesh1, mesh2, mesh3);
     camera.position.set(1, 1, 4)
     scene.add(camera);
-    // передвигаем камеру, чтобы смотрела прямо на объект
-    camera.lookAt(mesh1.position)
+    // передвигаем камеру, чтобы смотрела прямо на центральный объект
+    camera.lookAt(mesh2.position)
     // добавляем оси координат на сцену
     const axes = new THREE.AxesHelper(2);
     scene.add(axes);
     renderer.setSize(size.width, size.height);
     // Добавляем анимацию вращения для всех переданных мешей
     time = Date.now();
-    tick(renderer, scene, camera, [mesh1, mesh2, mesh3])
+    tick([mesh1, mesh2, mesh3])
 }
 
 document.addEventListener("DOMContentLoaded", render);
