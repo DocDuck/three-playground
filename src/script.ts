@@ -10,11 +10,13 @@ const size = {
     height: window.innerHeight
 }
 
+const getAspectRatio = () => size.width / size.height;
+
 /** Instances */
 const canvas: HTMLElement = document.querySelector('#canvas');
 const renderer = new THREE.WebGLRenderer({ canvas });
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, size.width / size.height);
+const camera = new THREE.PerspectiveCamera(75, getAspectRatio());
 const geometry = new THREE.BoxGeometry(2, 0.5, 0.05);
 const material1 = new THREE.MeshBasicMaterial({ color: 'white' });
 const material2 = new THREE.MeshBasicMaterial({ color: 'blue' });
@@ -26,6 +28,9 @@ const controls = new OrbitControls(camera, canvas);
 
 // Тут будет храниться таймстамп для расчета длительности тика:
 let time: number;
+/** Flags */
+let isAnimationEnabled = false;
+let isFullScreen = false;
 
 /** Methods */
 const tick = (meshes: THREE.Mesh | THREE.Mesh[]) => {
@@ -36,27 +41,40 @@ const tick = (meshes: THREE.Mesh | THREE.Mesh[]) => {
     time = currentTime;
 
     const delta = 0.001 * deltaTime;
-
-    if (Array.isArray(meshes)) {
-        meshes.forEach((mesh) => {
-            mesh.rotation.y += delta;
-        })
-    } else {
-        meshes.rotation.y += delta;
+    if (isAnimationEnabled) {
+        if (Array.isArray(meshes)) {
+            meshes.forEach((mesh) => {
+                mesh.rotation.y += delta;
+            })
+        } else {
+            meshes.rotation.y += delta;
+        }
     }
 
     renderer.render(scene, camera);
     window.requestAnimationFrame(() => tick(meshes));
 }
 const toggleFullscreen = () => {
+    isFullScreen = !isFullScreen;
 }
 const toggleAnimation = () => {
-
+    isAnimationEnabled = !isAnimationEnabled;
 }
 const handleKey: EventListener = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-        toggleFullscreen()
+    if (event.code === 'Enter') {
+        toggleFullscreen();
     }
+    if (event.code === 'Space') {
+        toggleAnimation();
+    }
+}
+const handleResize: EventListener = (event: KeyboardEvent) => {
+    size.height = window.innerHeight;
+    size.width = window.innerWidth;
+    camera.aspect = getAspectRatio();
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(size.width, size.height);
 }
 
 /**
@@ -84,3 +102,4 @@ const render = function () {
 
 document.addEventListener("DOMContentLoaded", render);
 document.addEventListener("keypress", handleKey);
+window.addEventListener("resize", handleResize)
